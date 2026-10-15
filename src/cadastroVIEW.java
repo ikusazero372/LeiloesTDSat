@@ -141,9 +141,15 @@ public class cadastroVIEW extends javax.swing.JFrame {
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         try {
+            String nome = cadastroNome.getText().trim();
+            int valor = Integer.parseInt(cadastroValor.getText().trim());
+            if (nome.isEmpty() || valor <= 0) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Informe um nome e um valor inteiro maior que zero.");
+                return;
+            }
             ProdutosDTO produto = new ProdutosDTO();
-            produto.setNome(cadastroNome.getText());
-            produto.setValor(Integer.parseInt(cadastroValor.getText()));
+            produto.setNome(nome);
+            produto.setValor(valor);
             produto.setStatus("A Venda");
             boolean cadastrado = new ProdutosDAO().cadastrarProduto(produto);
             if (cadastrado) {
@@ -154,6 +160,8 @@ public class cadastroVIEW extends javax.swing.JFrame {
             } else {
                 javax.swing.JOptionPane.showMessageDialog(this, "Nao foi possivel cadastrar o produto.");
             }
+        } catch (NumberFormatException erro) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Informe um nome e um valor inteiro maior que zero.");
         } catch (IllegalStateException erro) {
             javax.swing.JOptionPane.showMessageDialog(this, "Nao foi possivel cadastrar o produto.");
         }
