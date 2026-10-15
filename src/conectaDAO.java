@@ -1,33 +1,19 @@
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import javax.swing.JOptionPane;
+import java.util.Properties;
 
-
-
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-/**
- *
- * @author Adm
- */
 public class conectaDAO {
-    
-    public Connection connectDB(){
-        Connection conn = null;
-        
-        try {
-        
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/uc11?user=root&password=");
-            
-        } catch (SQLException erro){
-            JOptionPane.showMessageDialog(null, "Erro ConectaDAO" + erro.getMessage());
-        }
-        return conn;
+    public Connection connectDB() throws SQLException {
+        String url = System.getProperty("leiloes.db.url", "jdbc:mysql://localhost:3306/uc11");
+        String usuario = System.getProperty("leiloes.db.usuario", "root");
+        String senha = System.getProperty("leiloes.db.senha", "");
+        Properties configuracao = new Properties();
+        configuracao.setProperty("user", usuario);
+        configuracao.setProperty("password", senha);
+        configuracao.setProperty("serverTimezone", "UTC");
+        configuracao.setProperty("connectTimeout", "3000");
+        configuracao.setProperty("socketTimeout", "5000");
+        return DriverManager.getConnection(url, configuracao);
     }
-    
 }
