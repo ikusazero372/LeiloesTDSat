@@ -56,7 +56,7 @@ public class cadastroVIEW extends javax.swing.JFrame {
         });
 
         btnCadastrar.setBackground(new java.awt.Color(153, 255, 255));
-        btnCadastrar.setText("Cadastrar");
+        btnCadastrar.setText("Salvar");
         btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCadastrarActionPerformed(evt);
@@ -140,17 +140,23 @@ public class cadastroVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_cadastroNomeActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        ProdutosDTO produto = new ProdutosDTO();
-        String nome = cadastroNome.getText();
-        String valor = cadastroValor.getText();
-        String status = "A Venda";
-        produto.setNome(nome);
-        produto.setValor(Integer.parseInt(valor));
-        produto.setStatus(status);
-        
-        ProdutosDAO produtodao = new ProdutosDAO();
-        produtodao.cadastrarProduto(produto);
-        
+        try {
+            ProdutosDTO produto = new ProdutosDTO();
+            produto.setNome(cadastroNome.getText());
+            produto.setValor(Integer.parseInt(cadastroValor.getText()));
+            produto.setStatus("A Venda");
+            boolean cadastrado = new ProdutosDAO().cadastrarProduto(produto);
+            if (cadastrado) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Produto cadastrado com sucesso!");
+                cadastroNome.setText("");
+                cadastroValor.setText("");
+                cadastroNome.requestFocusInWindow();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Nao foi possivel cadastrar o produto.");
+            }
+        } catch (IllegalStateException erro) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Nao foi possivel cadastrar o produto.");
+        }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutosActionPerformed
