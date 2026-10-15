@@ -218,7 +218,8 @@ public class listagemVIEW extends javax.swing.JFrame {
                     listagem.get(i).getStatus()
                 });
             }
-        } catch (Exception e) {
+        } catch (IllegalStateException erro) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Nao foi possivel listar os produtos.");
         }
     
     }
