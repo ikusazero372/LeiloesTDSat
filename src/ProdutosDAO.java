@@ -50,4 +50,26 @@ public class ProdutosDAO {
             throw new IllegalStateException("Nao foi possivel listar os produtos.", erro);
         }
     }
+
+    public ArrayList<ProdutosDTO> listarProdutosVendidos() {
+        ArrayList<ProdutosDTO> produtos = new ArrayList<>();
+        String sql = "SELECT id, nome, valor, status FROM produtos WHERE status = ? ORDER BY id";
+        try (Connection conn = new conectaDAO().connectDB();
+                PreparedStatement prep = conn.prepareStatement(sql)) {
+            prep.setString(1, "Vendido");
+            try (ResultSet resultado = prep.executeQuery()) {
+                while (resultado.next()) {
+                    ProdutosDTO produto = new ProdutosDTO();
+                    produto.setId(resultado.getInt("id"));
+                    produto.setNome(resultado.getString("nome"));
+                    produto.setValor(resultado.getInt("valor"));
+                    produto.setStatus(resultado.getString("status"));
+                    produtos.add(produto);
+                }
+            }
+            return produtos;
+        } catch (SQLException erro) {
+            throw new IllegalStateException("Não foi possível listar os produtos vendidos.", erro);
+        }
+    }
 }
